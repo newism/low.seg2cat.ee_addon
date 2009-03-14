@@ -21,7 +21,7 @@ class low_seg2cat
 	var $settings       = array();
 
 	var $name           = 'Low Seg2Cat';
-	var $version        = '1.0.0';
+	var $version        = '1.0.1';
 	var $description    = 'Registers Category information according to URI Segments';
 	var $settings_exist = 'n';
 	var $docs_url       = 'http://loweblog.com/freelance/article/ee-low-seg2cat-extension/';
@@ -65,15 +65,17 @@ class low_seg2cat
 		// loop through segments and set data array thus: segment_1_category_id etc
 		foreach ($IN->SEGS AS $nr => $seg)
 		{
-			$data['segment_'.$nr.'_category_id']   = '';
-			$data['segment_'.$nr.'_category_name'] = '';
+			$data['segment_'.$nr.'_category_id']			= '';
+			$data['segment_'.$nr.'_category_name']			= '';
+			$data['segment_'.$nr.'_category_description']	= '';
+			$data['segment_'.$nr.'_category_image']			= '';
 			$segs[] = $DB->escape_str($seg);
 		}
 		
 		// put segments in sql IN query; retrieve categories that match
 		$sql_segs = "'".implode("','", $segs)."'";
 		$sql = "SELECT
-				cat_id, cat_url_title, cat_name
+				cat_id, cat_url_title, cat_name, cat_description, cat_image
 			FROM
 				exp_categories
 			WHERE
@@ -103,8 +105,10 @@ class low_seg2cat
 			foreach ($query->result AS $row)
 			{
 				// overwrite values in data array
-				$data['segment_'.$ids[$row['cat_url_title']].'_category_id']   = $row['cat_id'];
-				$data['segment_'.$ids[$row['cat_url_title']].'_category_name'] = $TYPE->light_xhtml_typography($row['cat_name']);
+				$data['segment_'.$ids[$row['cat_url_title']].'_category_id']			= $row['cat_id'];
+				$data['segment_'.$ids[$row['cat_url_title']].'_category_name']			= $TYPE->light_xhtml_typography($row['cat_name']);
+				$data['segment_'.$ids[$row['cat_url_title']].'_category_description']	= $row['cat_description'];
+				$data['segment_'.$ids[$row['cat_url_title']].'_category_image']			= $row['cat_image'];
 				$cats[] = $row['cat_id'];
 			}
 			
