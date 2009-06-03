@@ -21,7 +21,7 @@ class low_seg2cat
 	var $settings       = array();
 
 	var $name           = 'Low Seg2Cat';
-	var $version        = '1.0.1';
+	var $version        = '1.0.2';
 	var $description    = 'Registers Category information according to URI Segments';
 	var $settings_exist = 'n';
 	var $docs_url       = 'http://loweblog.com/freelance/article/ee-low-seg2cat-extension/';
@@ -131,7 +131,7 @@ class low_seg2cat
 		
 		$DB->query(
 			$DB->insert_string(
-				$PREFS->ini('db_prefix').'_extensions',
+				'exp_extensions',
 				array(
 					'extension_id' => '',
 					'class'        => __CLASS__,
@@ -160,9 +160,7 @@ class low_seg2cat
 			return FALSE;
 		}
 		
-		$DB->query("UPDATE ".$PREFS->ini('db_prefix')."_extensions 
-							  SET version = '".$DB->escape_str($this->version)."' 
-							  WHERE class = '".__CLASS__."'");
+		$DB->query("UPDATE exp_extensions SET version = '".$DB->escape_str($this->version)."' WHERE class = '".__CLASS__."'");
 	}
 	// END update_extension
 
@@ -173,7 +171,7 @@ class low_seg2cat
 	{
 		global $DB, $PREFS;
 		
-		$DB->query("DELETE FROM ".$PREFS->ini('db_prefix')."_extensions WHERE class = '".__CLASS__."'");
+		$DB->query("DELETE FROM exp_extensions WHERE class = '".__CLASS__."'");
 	}
 	// END disable_extension
 	 
