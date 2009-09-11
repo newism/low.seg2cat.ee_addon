@@ -21,7 +21,7 @@ class low_seg2cat
 	var $settings       = array();
 
 	var $name           = 'Low Seg2Cat';
-	var $version        = '1.0.2';
+	var $version        = '1.0.3';
 	var $description    = 'Registers Category information according to URI Segments';
 	var $settings_exist = 'n';
 	var $docs_url       = 'http://loweblog.com/freelance/article/ee-low-seg2cat-extension/';
@@ -69,13 +69,14 @@ class low_seg2cat
 			$data['segment_'.$nr.'_category_name']			= '';
 			$data['segment_'.$nr.'_category_description']	= '';
 			$data['segment_'.$nr.'_category_image']			= '';
+			$data['segment_'.$nr.'_category_parent_id']		= '';
 			$segs[] = $DB->escape_str($seg);
 		}
 		
 		// put segments in sql IN query; retrieve categories that match
 		$sql_segs = "'".implode("','", $segs)."'";
 		$sql = "SELECT
-				cat_id, cat_url_title, cat_name, cat_description, cat_image
+				cat_id, cat_url_title, cat_name, cat_description, cat_image, parent_id
 			FROM
 				exp_categories
 			WHERE
@@ -109,6 +110,7 @@ class low_seg2cat
 				$data['segment_'.$ids[$row['cat_url_title']].'_category_name']			= $TYPE->light_xhtml_typography($row['cat_name']);
 				$data['segment_'.$ids[$row['cat_url_title']].'_category_description']	= $row['cat_description'];
 				$data['segment_'.$ids[$row['cat_url_title']].'_category_image']			= $row['cat_image'];
+				$data['segment_'.$ids[$row['cat_url_title']].'_category_parent_id']		= $row['parent_id'];
 				$cats[] = $row['cat_id'];
 			}
 			
