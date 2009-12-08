@@ -56,6 +56,8 @@ class low_seg2cat
 		
 		// Only continue if we have segments to check
 		if (empty($IN->SEGS)) return;
+		// Only continue if we have segments to check and this is a page request
+		if (REQ != "PAGE" || empty($IN->SEGS)) return;
 
 		// initiate some vars
 		$site = $PREFS->ini('site_id');
