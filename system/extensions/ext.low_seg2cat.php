@@ -59,6 +59,13 @@ class low_seg2cat
 		// Only continue if we have segments to check and this is a page request
 		if (REQ != "PAGE" || empty($IN->SEGS)) return;
 
+		// Added by: Leevi Graham - Technical Director - Newism Pty Ltd <http://leevigraham.com> | <http://newism.com.au> on Dec 9th 2009
+		// quick check to see if there is a comparison string, and if so does the comparison string match the URI?
+		// no point doing a DB lookup if there is no category
+		// This requires a new $conf variable to match against eg:
+		// $conf['low_seg2cat_match'] = "#^/(earn|spend|save)#";
+		if($PREFS->ini('low_seg2cat_match') != FALSE && !preg_match($PREFS->ini('low_seg2cat_match'), $IN->URI)) return;
+
 		// initiate some vars
 		$site = $PREFS->ini('site_id');
 		$data = $cats = $segs = array();
